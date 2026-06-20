@@ -4,22 +4,26 @@
 
 Sistema de escritorio desarrollado en **C# .NET 8 WinForms** para la administración y venta de entradas de eventos deportivos.
 
-La aplicación permite gestionar clientes, vendedores, partidos, localidades, disponibilidad de boletos y ventas, implementando una arquitectura por capas que separa claramente la interfaz de usuario, la lógica de negocio, el acceso a datos y las entidades del dominio.
+La aplicación permite gestionar clientes, vendedores, partidos, localidades, disponibilidad de boletos y ventas, aplicando una arquitectura por capas que separa la interfaz de usuario, la lógica de negocio, el acceso a datos y las entidades del dominio.
 
 ---
 
-# Objetivos del Proyecto
+## Objetivos del Proyecto
 
-* Administrar clientes y vendedores.
-* Gestionar partidos deportivos.
-* Gestionar localidades y disponibilidad.
-* Registrar ventas de entradas.
-* Aplicar validaciones de negocio centralizadas.
-* Mantener una arquitectura escalable y mantenible.
+- Administrar clientes y vendedores.
+- Gestionar partidos deportivos.
+- Registrar localidades del estadio.
+- Asignar localidades disponibles por partido.
+- Registrar ventas de entradas.
+- Validar disponibilidad antes de vender.
+- Calcular automáticamente el total de cada venta.
+- Mantener una estructura clara, mantenible y escalable.
 
 ---
 
-# Arquitectura
+## Arquitectura General
+
+El sistema está organizado en cuatro capas principales:
 
 ```text
 ┌─────────────────────────┐
@@ -33,315 +37,811 @@ La aplicación permite gestionar clientes, vendedores, partidos, localidades, di
 └─────────────────────────┘
 ```
 
+### Presentación
+
+Contiene los formularios WinForms utilizados por el usuario para registrar, consultar y operar información.
+
+### Lógica de Negocio
+
+Contiene los servicios responsables de validar reglas del sistema, coordinar operaciones y centralizar mensajes.
+
+### Acceso a Datos
+
+Contiene los gestores encargados de registrar, consultar y modificar la información almacenada en memoria.
+
+### Entidades
+
+Contiene las clases del dominio del sistema.
+
 ---
 
-# Estructura del Proyecto
+## Estructura del Proyecto
 
 ```text
 SistemaBoleteriaUNED
 │
 ├── Entidades
-│   ├── Persona
-│   ├── Cliente
-│   ├── Vendedor
-│   ├── Partido
-│   ├── Localidad
-│   ├── LocalidadPorPartido
-│   └── Venta
+│   ├── Persona.cs
+│   ├── Cliente.cs
+│   ├── Vendedor.cs
+│   ├── Partido.cs
+│   ├── Localidad.cs
+│   ├── LocalidadPorPartido.cs
+│   └── Venta.cs
 │
 ├── AccesoDatos
-│   ├── DatosSistema
-│   ├── GestorClientes
-│   ├── GestorVendedores
-│   ├── GestorPartidos
-│   ├── GestorLocalidades
-│   ├── GestorLocalidadesPorPartido
-│   └── GestorVentas
+│   ├── DatosSistema.cs
+│   ├── GestorClientes.cs
+│   ├── GestorVendedores.cs
+│   ├── GestorPartidos.cs
+│   ├── GestorLocalidades.cs
+│   ├── GestorLocalidadesPorPartido.cs
+│   └── GestorVentas.cs
 │
 ├── LogicaNegocio
-│   ├── Servicios
-│   └── Mensajes
+│   ├── ServicioCliente.cs
+│   ├── ServicioVendedor.cs
+│   ├── ServicioPartido.cs
+│   ├── ServicioLocalidad.cs
+│   ├── ServicioLocalidadPorPartido.cs
+│   ├── ServicioVenta.cs
+│   └── MensajesError.cs
 │
 └── Presentacion
-    ├── Gestiones
-    ├── Consultas
-    └── Operaciones
+    ├── Program.cs
+    ├── Principal.cs
+    ├── FrmGestiones.cs
+    ├── FrmConsultas.cs
+    ├── FrmOperaciones.cs
+    ├── FrmClientes.cs
+    ├── FrmVendedores.cs
+    ├── FrmPartidos.cs
+    ├── FrmLocalidades.cs
+    ├── FrmLocalidadPorPartido.cs
+    ├── FrmVentaDeEntradas.cs
+    ├── FrmConsultarClientes.cs
+    ├── FrmConsultarVendedores.cs
+    ├── FrmConsultarPartidos.cs
+    ├── FrmConsultarLocalidades.cs
+    ├── FrmConsultarLocalidadPorPartido.cs
+    └── FrmConsultarVentas.cs
 ```
 
 ---
 
-# Modelo de Dominio
+## Capa de Presentación
 
-## Persona
+La capa de presentación está implementada con **Windows Forms** y contiene los formularios que permiten al usuario interactuar con el sistema.
 
-Clase base para las entidades que representan personas.
+### Punto de Entrada
 
-### Propiedades
+#### Program.cs
 
-* Id
-* Identificacion
-* Nombre
-* Apellido
-* FechaNacimiento
+Archivo principal de inicio de la aplicación.
 
-## Cliente
+Responsabilidades:
 
-Hereda de Persona.
+- Inicializar la aplicación.
+- Ejecutar el formulario principal.
+- Configurar el entorno inicial de WinForms.
 
-### Propiedades Adicionales
+### Menú Principal
 
-* FechaRegistro
-* Activo
+#### Principal.cs
 
-## Vendedor
+Formulario principal del sistema.
 
-Hereda de Persona.
+Responsabilidades:
 
-### Propiedades Adicionales
+- Mostrar el menú principal.
+- Permitir la navegación hacia los módulos de gestiones, consultas y operaciones.
 
-* FechaIngreso
+---
 
-## Partido
+## Formularios de Navegación
+
+### FrmGestiones.cs
+
+Formulario de navegación para operaciones de registro.
+
+Permite acceder a:
+
+- FrmClientes.cs
+- FrmVendedores.cs
+- FrmPartidos.cs
+- FrmLocalidades.cs
+- FrmLocalidadPorPartido.cs
+
+### FrmConsultas.cs
+
+Formulario de navegación para consultas.
+
+Permite acceder a:
+
+- FrmConsultarClientes.cs
+- FrmConsultarVendedores.cs
+- FrmConsultarPartidos.cs
+- FrmConsultarLocalidades.cs
+- FrmConsultarLocalidadPorPartido.cs
+- FrmConsultarVentas.cs
+
+### FrmOperaciones.cs
+
+Formulario de navegación para procesos operativos.
+
+Permite acceder a:
+
+- FrmVentaDeEntradas.cs
+- FrmLocalidadPorPartido.cs
+
+---
+
+## Formularios Específicos de Gestión
+
+Cada formulario de gestión se relaciona con una entidad del dominio y utiliza su servicio correspondiente en la capa de lógica de negocio.
+
+### FrmClientes.cs
+
+Formulario para registrar clientes.
+
+Relaciones principales:
+
+- Usa ServicioCliente.cs.
+- Registra objetos Cliente.cs.
+- Valida datos requeridos antes del registro.
+
+### FrmVendedores.cs
+
+Formulario para registrar vendedores.
+
+Relaciones principales:
+
+- Usa ServicioVendedor.cs.
+- Registra objetos Vendedor.cs.
+- Valida datos requeridos antes del registro.
+
+### FrmPartidos.cs
+
+Formulario para registrar partidos.
+
+Relaciones principales:
+
+- Usa ServicioPartido.cs.
+- Registra objetos Partido.cs.
+- Permite definir si un partido está activo o inactivo.
+
+### FrmLocalidades.cs
+
+Formulario para registrar localidades del estadio.
+
+Relaciones principales:
+
+- Usa ServicioLocalidad.cs.
+- Registra objetos Localidad.cs.
+- Valida precio e identificador de localidad.
+
+### FrmLocalidadPorPartido.cs
+
+Formulario para asignar localidades disponibles a partidos específicos.
+
+Relaciones principales:
+
+- Usa ServicioLocalidadPorPartido.cs.
+- Usa Partido.cs.
+- Usa Localidad.cs.
+- Crea objetos LocalidadPorPartido.cs.
+- Valida que no existan asignaciones duplicadas.
+- Valida cantidad disponible.
+
+### FrmVentaDeEntradas.cs
+
+Formulario para registrar ventas de entradas.
+
+Relaciones principales:
+
+- Usa ServicioVenta.cs.
+- Usa Cliente.cs.
+- Usa Vendedor.cs.
+- Usa Partido.cs.
+- Usa Localidad.cs.
+- Usa LocalidadPorPartido.cs.
+- Crea objetos Venta.cs.
+- Valida disponibilidad.
+- Calcula el total de la venta.
+- Actualiza la cantidad disponible.
+
+---
+
+## Formularios Específicos de Consulta
+
+Los formularios de consulta permiten visualizar registros existentes y filtrar información por identificador o atributos relevantes.
+
+### FrmConsultarClientes.cs
+
+Consulta clientes registrados.
+
+Relaciones principales:
+
+- Usa ServicioCliente.cs.
+- Muestra información de Cliente.cs.
+
+### FrmConsultarVendedores.cs
+
+Consulta vendedores registrados.
+
+Relaciones principales:
+
+- Usa ServicioVendedor.cs.
+- Muestra información de Vendedor.cs.
+
+### FrmConsultarPartidos.cs
+
+Consulta partidos registrados.
+
+Relaciones principales:
+
+- Usa ServicioPartido.cs.
+- Muestra información de Partido.cs.
+
+### FrmConsultarLocalidades.cs
+
+Consulta localidades registradas.
+
+Relaciones principales:
+
+- Usa ServicioLocalidad.cs.
+- Muestra información de Localidad.cs.
+
+### FrmConsultarLocalidadPorPartido.cs
+
+Consulta asignaciones de localidades por partido.
+
+Relaciones principales:
+
+- Usa ServicioLocalidadPorPartido.cs.
+- Muestra información de LocalidadPorPartido.cs.
+- Relaciona Partido.cs con Localidad.cs.
+
+### FrmConsultarVentas.cs
+
+Consulta ventas registradas.
+
+Relaciones principales:
+
+- Usa ServicioVenta.cs.
+- Muestra información de Venta.cs.
+- Muestra cliente, vendedor, partido, localidad, cantidad, fecha y total.
+
+---
+
+## Capa de Lógica de Negocio
+
+La capa de lógica de negocio contiene los servicios responsables de aplicar reglas, validaciones y coordinación entre la presentación, los gestores y las entidades.
+
+---
+
+## Servicios de Negocio
+
+### ServicioCliente.cs
+
+Responsable de administrar la lógica relacionada con clientes.
+
+Relaciones principales:
+
+- Usa GestorClientes.cs.
+- Crea y consulta objetos Cliente.cs.
+- Valida datos de cliente.
+
+### ServicioVendedor.cs
+
+Responsable de administrar la lógica relacionada con vendedores.
+
+Relaciones principales:
+
+- Usa GestorVendedores.cs.
+- Crea y consulta objetos Vendedor.cs.
+- Valida datos de vendedor.
+
+### ServicioPartido.cs
+
+Responsable de administrar la lógica relacionada con partidos.
+
+Relaciones principales:
+
+- Usa GestorPartidos.cs.
+- Crea y consulta objetos Partido.cs.
+- Valida fecha, hora, rival y estado activo.
+
+### ServicioLocalidad.cs
+
+Responsable de administrar la lógica relacionada con localidades.
+
+Relaciones principales:
+
+- Usa GestorLocalidades.cs.
+- Crea y consulta objetos Localidad.cs.
+- Valida nombre, precio e identificador.
+
+### ServicioLocalidadPorPartido.cs
+
+Responsable de administrar la asignación de localidades a partidos.
+
+Relaciones principales:
+
+- Usa GestorLocalidadesPorPartido.cs.
+- Usa GestorPartidos.cs.
+- Usa GestorLocalidades.cs.
+- Valida existencia de Partido.cs.
+- Valida existencia de Localidad.cs.
+- Valida duplicados.
+- Crea objetos LocalidadPorPartido.cs.
+
+### ServicioVenta.cs
+
+Responsable de administrar el proceso de venta de entradas.
+
+Relaciones principales:
+
+- Usa GestorVentas.cs.
+- Usa GestorClientes.cs.
+- Usa GestorVendedores.cs.
+- Usa GestorPartidos.cs.
+- Usa GestorLocalidades.cs.
+- Usa GestorLocalidadesPorPartido.cs.
+- Crea objetos Venta.cs.
+- Valida disponibilidad en LocalidadPorPartido.cs.
+- Calcula el total utilizando el precio de Localidad.cs.
+- Registra la venta en GestorVentas.cs.
+- Actualiza la disponibilidad de boletos.
+
+---
+
+## Relación entre Venta y Lógica de Negocio
+
+La entidad **Venta.cs** pertenece a la capa de entidades y representa la transacción final del sistema.
+
+La clase **ServicioVenta.cs** pertenece a la capa de lógica de negocio y es responsable de crear, validar y registrar objetos de tipo **Venta**.
+
+La venta no debe ser gestionada directamente desde la interfaz ni almacenada sin pasar por el servicio de negocio.
+
+Flujo correcto:
+
+```text
+FrmVentaDeEntradas.cs
+    ↓
+ServicioVenta.cs
+    ↓
+Venta.cs
+    ↓
+GestorVentas.cs
+    ↓
+DatosSistema.cs
+```
+
+Relaciones de ServicioVenta.cs:
+
+```text
+ServicioVenta.cs
+    ├── usa Cliente.cs
+    ├── usa Vendedor.cs
+    ├── usa Partido.cs
+    ├── usa Localidad.cs
+    ├── usa LocalidadPorPartido.cs
+    ├── crea Venta.cs
+    ├── delega en GestorVentas.cs
+    └── actualiza disponibilidad mediante GestorLocalidadesPorPartido.cs
+```
+
+---
+
+## Mensajes Centralizados
+
+### MensajesError.cs
+
+Clase utilizada para centralizar mensajes de error, validación y confirmación del sistema.
+
+Beneficios:
+
+- Evita duplicación de textos.
+- Facilita mantenimiento.
+- Mejora consistencia en la interfaz.
+- Centraliza mensajes utilizados por servicios y formularios.
+
+---
+
+## Capa de Acceso a Datos
+
+La capa de acceso a datos administra las colecciones del sistema y actúa como intermediaria entre la lógica de negocio y el almacenamiento en memoria.
+
+---
+
+## DatosSistema.cs
+
+Clase estática utilizada como almacenamiento central en memoria.
+
+Responsabilidades:
+
+- Mantener listas compartidas durante la ejecución.
+- Permitir persistencia temporal entre formularios.
+- Centralizar las colecciones principales del sistema.
+
+Colecciones administradas:
+
+- Clientes
+- Vendedores
+- Partidos
+- Localidades
+- LocalidadesPorPartido
+- Ventas
+
+---
+
+## Gestores de Datos
+
+### GestorClientes.cs
+
+Responsable de registrar y consultar clientes.
+
+Relaciones principales:
+
+- Lee y escribe en DatosSistema.cs.
+- Administra objetos Cliente.cs.
+
+### GestorVendedores.cs
+
+Responsable de registrar y consultar vendedores.
+
+Relaciones principales:
+
+- Lee y escribe en DatosSistema.cs.
+- Administra objetos Vendedor.cs.
+
+### GestorPartidos.cs
+
+Responsable de registrar y consultar partidos.
+
+Relaciones principales:
+
+- Lee y escribe en DatosSistema.cs.
+- Administra objetos Partido.cs.
+
+### GestorLocalidades.cs
+
+Responsable de registrar y consultar localidades.
+
+Relaciones principales:
+
+- Lee y escribe en DatosSistema.cs.
+- Administra objetos Localidad.cs.
+
+### GestorLocalidadesPorPartido.cs
+
+Responsable de registrar y consultar asignaciones de localidades por partido.
+
+Relaciones principales:
+
+- Lee y escribe en DatosSistema.cs.
+- Administra objetos LocalidadPorPartido.cs.
+- Relaciona Partido.cs y Localidad.cs.
+
+### GestorVentas.cs
+
+Responsable de registrar y consultar ventas.
+
+Relaciones principales:
+
+- Lee y escribe en DatosSistema.cs.
+- Administra objetos Venta.cs.
+
+---
+
+## Capa de Entidades
+
+La capa de entidades contiene las clases que representan el dominio del sistema.
+
+---
+
+## Entidades del Sistema
+
+### Persona.cs
+
+Clase base para entidades que representan personas.
+
+Propiedades principales:
+
+- Id
+- Identificacion
+- Nombre
+- Apellido
+- FechaNacimiento
+
+Relaciones:
+
+- Cliente.cs hereda de Persona.cs.
+- Vendedor.cs hereda de Persona.cs.
+
+### Cliente.cs
+
+Representa al comprador de entradas.
+
+Hereda de:
+
+- Persona.cs
+
+Propiedades adicionales:
+
+- FechaRegistro
+- Activo
+
+Relaciones:
+
+- Se utiliza en Venta.cs.
+- Se administra mediante ServicioCliente.cs y GestorClientes.cs.
+
+### Vendedor.cs
+
+Representa al usuario o empleado que registra ventas.
+
+Hereda de:
+
+- Persona.cs
+
+Propiedades adicionales:
+
+- FechaIngreso
+
+Relaciones:
+
+- Se utiliza en Venta.cs.
+- Se administra mediante ServicioVendedor.cs y GestorVendedores.cs.
+
+### Partido.cs
 
 Representa un evento deportivo.
 
-### Propiedades
+Propiedades principales:
 
-* IdPartido
-* Rival
-* Fecha
-* Hora
-* Activo
+- IdPartido
+- Rival
+- Fecha
+- Hora
+- Activo
 
-## Localidad
+Relaciones:
 
-Representa una zona del estadio.
+- Se utiliza en LocalidadPorPartido.cs.
+- Se utiliza en Venta.cs.
+- Se administra mediante ServicioPartido.cs y GestorPartidos.cs.
 
-### Propiedades
+### Localidad.cs
 
-* IdLocalidad
-* NombreLocalidad
-* Precio
+Representa una zona o localidad del estadio.
 
-## LocalidadPorPartido
+Propiedades principales:
 
-Asocia una localidad con un partido específico.
+- IdLocalidad
+- NombreLocalidad
+- Precio
 
-### Propiedades
+Relaciones:
 
-* Partido
-* Localidad
-* CantidadDisponible
+- Se utiliza en LocalidadPorPartido.cs.
+- Se utiliza en Venta.cs.
+- Se administra mediante ServicioLocalidad.cs y GestorLocalidades.cs.
 
-## Venta
+### LocalidadPorPartido.cs
 
-Representa una transacción de venta.
+Representa la disponibilidad de una localidad para un partido específico.
 
-### Propiedades
+Propiedades principales:
 
-* IdVenta
-* Cliente
-* Vendedor
-* Partido
-* Localidad
-* LocalidadPorPartido
-* Cantidad
-* FechaVenta
-* Total
+- Partido
+- Localidad
+- CantidadDisponible
 
----
+Relaciones:
 
-# Acceso a Datos
+- Relaciona Partido.cs con Localidad.cs.
+- Se utiliza para validar disponibilidad en ServicioVenta.cs.
+- Se administra mediante ServicioLocalidadPorPartido.cs y GestorLocalidadesPorPartido.cs.
+- Se referencia desde Venta.cs.
 
-## DatosSistema
+### Venta.cs
 
-Clase estática responsable de almacenar toda la información del sistema en memoria durante la ejecución de la aplicación.
+Representa una venta de entradas.
 
-### Colecciones
+Propiedades principales:
 
-* Clientes
-* Vendedores
-* Partidos
-* Localidades
-* LocalidadesPorPartido
-* Ventas
+- IdVenta
+- Cliente
+- Vendedor
+- Partido
+- Localidad
+- LocalidadPorPartido
+- Cantidad
+- FechaVenta
+- Total
 
-## Gestores
+Relaciones:
 
-Cada entidad posee un gestor especializado para administrar las operaciones CRUD y consultas.
-
-### Gestores Implementados
-
-* GestorClientes
-* GestorVendedores
-* GestorPartidos
-* GestorLocalidades
-* GestorLocalidadesPorPartido
-* GestorVentas
-
----
-
-# Lógica de Negocio
-
-La capa de negocio encapsula las reglas y validaciones del sistema.
-
-## Servicios
-
-* ServicioCliente
-* ServicioVendedor
-* ServicioPartido
-* ServicioLocalidad
-* ServicioLocalidadPorPartido
-* ServicioVenta
-
-## Responsabilidades Principales
-
-### ServicioLocalidadPorPartido
-
-* Validar existencia de Partido.
-* Validar existencia de Localidad.
-* Evitar duplicados.
-
-### ServicioVenta
-
-* Validar disponibilidad.
-* Calcular total.
-* Registrar venta.
-* Actualizar inventario disponible.
+- Referencia Cliente.cs.
+- Referencia Vendedor.cs.
+- Referencia Partido.cs.
+- Referencia Localidad.cs.
+- Referencia LocalidadPorPartido.cs.
+- Es creada y validada por ServicioVenta.cs.
+- Es almacenada por GestorVentas.cs.
 
 ---
 
-# Mensajes Centralizados
-
-La aplicación utiliza clases de mensajes centralizados para:
-
-* Mensajes de éxito.
-* Mensajes de error.
-* Confirmaciones.
-* Validaciones.
-
-Esto facilita el mantenimiento y evita duplicación de textos.
-
----
-
-# Interfaz de Usuario
-
-## Gestiones
-
-Formularios utilizados para registrar información.
-
-### Formularios
-
-* FrmClientes
-* FrmVendedores
-* FrmPartidos
-* FrmLocalidades
-* FrmLocalidadPorPartido
-
-## Consultas
-
-Formularios utilizados para visualizar y buscar información.
-
-### Características
-
-* Carga automática de datos.
-* Búsqueda por identificador.
-* Búsqueda por atributos.
-* Scroll horizontal.
-* Ajuste automático de columnas.
-
-### Formularios
-
-* FrmConsultarClientes
-* FrmConsultarVendedores
-* FrmConsultarPartidos
-* FrmConsultarLocalidades
-* FrmConsultarLocalidadPorPartido
-* FrmConsultarVentas
-
-## Operaciones
-
-### FrmVentaDeEntradas
-
-Permite:
-
-1. Seleccionar cliente.
-2. Seleccionar vendedor.
-3. Seleccionar partido.
-4. Seleccionar localidad.
-5. Validar disponibilidad.
-6. Calcular total.
-7. Registrar venta.
-8. Actualizar existencias.
-
----
-
-# Flujo de Venta
+## Flujo General de Navegación
 
 ```text
-Cliente
+Program.cs
     ↓
-Seleccionar Partido
+Principal.cs
     ↓
-Seleccionar Localidad
+FrmGestiones.cs / FrmConsultas.cs / FrmOperaciones.cs
     ↓
-Validar Disponibilidad
+Formularios específicos
     ↓
-Calcular Total
+Servicios de negocio
     ↓
-Registrar Venta
+Gestores de datos
     ↓
-Actualizar Existencias
+DatosSistema.cs
 ```
 
 ---
 
-# Características UX/UI
+## Flujo de Registro de Cliente
 
-* Navegación consistente entre formularios.
-* Botón de retorno al menú principal.
-* Mensajes claros para el usuario.
-* Combos con formato "Id - Nombre".
-* Consultas con filtros de búsqueda.
-* Visualización optimizada de tablas.
-
----
-
-# Tecnologías Utilizadas
-
-* C#
-* .NET 8
-* Windows Forms
-* Programación Orientada a Objetos
+```text
+FrmClientes.cs
+    ↓
+ServicioCliente.cs
+    ↓
+GestorClientes.cs
+    ↓
+DatosSistema.cs
+    ↓
+Cliente.cs
+```
 
 ---
 
-# Principios de Diseño
+## Flujo de Registro de Partido
 
-* Arquitectura por capas.
-* Separación de responsabilidades.
-* Encapsulamiento.
-* Reutilización de código.
-* Centralización de mensajes.
-* Persistencia compartida mediante DatosSistema.
-
----
-
-# Mejoras Futuras
-
-* Persistencia en SQL Server.
-* Patrón Repository.
-* Inyección de Dependencias.
-* Exportación a Excel y PDF.
-* Pruebas unitarias.
-* API REST.
-* Control de usuarios y roles.
+```text
+FrmPartidos.cs
+    ↓
+ServicioPartido.cs
+    ↓
+GestorPartidos.cs
+    ↓
+DatosSistema.cs
+    ↓
+Partido.cs
+```
 
 ---
 
-# Autor
+## Flujo de Asignación de Localidad por Partido
 
-**Norvin Martinez**
-QA Engineer | Software Developer
+```text
+FrmLocalidadPorPartido.cs
+    ↓
+ServicioLocalidadPorPartido.cs
+    ↓
+GestorPartidos.cs
+    ↓
+GestorLocalidades.cs
+    ↓
+GestorLocalidadesPorPartido.cs
+    ↓
+DatosSistema.cs
+    ↓
+LocalidadPorPartido.cs
+```
 
-Proyecto académico desarrollado utilizando C# .NET 8 WinForms para la gestión de boletería deportiva.
+---
+
+## Flujo de Venta de Entradas
+
+```text
+FrmVentaDeEntradas.cs
+    ↓
+ServicioVenta.cs
+    ↓
+Validar Cliente.cs
+    ↓
+Validar Vendedor.cs
+    ↓
+Validar Partido.cs
+    ↓
+Validar Localidad.cs
+    ↓
+Validar LocalidadPorPartido.cs
+    ↓
+Calcular Total
+    ↓
+Crear Venta.cs
+    ↓
+GestorVentas.cs
+    ↓
+Actualizar CantidadDisponible
+    ↓
+DatosSistema.cs
+```
+
+---
+
+## Características UX/UI
+
+- Navegación consistente entre formularios.
+- Botón de retorno al menú principal.
+- Cierre controlado de formularios.
+- Mensajes claros para el usuario.
+- Combos con formato `Id - Nombre`.
+- Grids de consulta con filtros.
+- Búsqueda por identificador.
+- Búsqueda por atributos.
+- Scroll horizontal en consultas extensas.
+- Ajuste automático de columnas.
+
+---
+
+## Validaciones Principales
+
+El sistema realiza validaciones como:
+
+- Campos requeridos.
+- Identificadores numéricos.
+- Existencia previa de entidades.
+- Duplicados.
+- Partidos activos.
+- Localidades disponibles.
+- Cantidad de entradas mayor a cero.
+- Stock suficiente antes de registrar una venta.
+- Cálculo correcto del total.
+
+---
+
+## Tecnologías Utilizadas
+
+- C#
+- .NET 8
+- Windows Forms
+- Programación Orientada a Objetos
+- Persistencia en memoria
+
+---
+
+## Principios de Diseño Aplicados
+
+- Arquitectura por capas.
+- Separación de responsabilidades.
+- Encapsulamiento.
+- Reutilización de código.
+- Centralización de mensajes.
+- Persistencia compartida mediante clase estática.
+- Validación en capa de negocio.
+- Interfaz separada de la lógica del sistema.
+
+---
+
+## Mejoras Futuras
+
+- Persistencia en SQL Server.
+- Implementación de patrón Repository.
+- Inyección de dependencias.
+- Exportación de reportes a Excel o PDF.
+- Pruebas unitarias automatizadas.
+- Control de usuarios y roles.
+- Manejo de logs.
+- Migración a arquitectura MVC o MVVM.
+- API REST para integración con otros sistemas.
+
+---
+
+Proyecto académico desarrollado utilizando **C# .NET 8 WinForms** para la gestión de boletería deportiva.
