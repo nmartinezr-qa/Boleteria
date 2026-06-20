@@ -1,0 +1,5 @@
+C:\Users\Admin\Desktop\Proyecto UNED\Boleteria.exe
+C:\Users\Admin\Desktop\Proyecto UNED\Boleteria.dll
+C:\Users\Admin\Desktop\Proyecto UNED\Boleteria.deps.json
+C:\Users\Admin\Desktop\Proyecto UNED\Boleteria.runtimeconfig.json
+C:\Users\Admin\Desktop\Proyecto UNED\Boleteria.pdb
