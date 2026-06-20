@@ -378,17 +378,19 @@ Relaciones principales:
 
 ### ServicioVenta.cs
 
-Responsable de crear y validar ventas.
+Servicio de negocio responsable de crear, validar y registrar ventas.
 
 Relaciones:
-- Usa Cliente.cs.
-- Usa Vendedor.cs.
-- Usa Partido.cs.
-- Usa Localidad.cs.
-- Usa LocalidadPorPartido.cs.
-- Crea Venta.cs.
-- Usa GestorVentas.cs.
-- Usa GestorLocalidadesPorPartido.cs para actualizar disponibilidad.
+- Recibe datos desde FrmVentaDeEntradas.cs.
+- Crea objetos Venta.cs.
+- Valida Cliente.cs.
+- Valida Vendedor.cs.
+- Valida Partido.cs.
+- Valida Localidad.cs.
+- Valida LocalidadPorPartido.cs.
+- Usa GestorVentas.cs para registrar ventas.
+- Usa GestorLocalidadesPorPartido.cs para consultar y actualizar disponibilidad.
+- Consulta información desde DatosSistema.cs mediante los gestores.
 
 ---
 
@@ -613,6 +615,64 @@ Relaciones:
 - Contiene una referencia a LocalidadPorPartido.cs.
 - Es creada por ServicioVenta.cs.
 - Es almacenada por GestorVentas.cs.
+
+## Mapa Explícito de Relaciones entre Capas
+
+### Cliente.cs
+- Usado por FrmClientes.cs.
+- Usado por FrmConsultarClientes.cs.
+- Creado y validado por ServicioCliente.cs.
+- Registrado y consultado por GestorClientes.cs.
+- Almacenado en DatosSistema.cs.
+- Referenciado por Venta.cs.
+- Validado por ServicioVenta.cs.
+
+### Vendedor.cs
+- Usado por FrmVendedores.cs.
+- Usado por FrmConsultarVendedores.cs.
+- Creado y validado por ServicioVendedor.cs.
+- Registrado y consultado por GestorVendedores.cs.
+- Almacenado en DatosSistema.cs.
+- Referenciado por Venta.cs.
+- Validado por ServicioVenta.cs.
+
+### Partido.cs
+- Usado por FrmPartidos.cs.
+- Usado por FrmConsultarPartidos.cs.
+- Creado y validado por ServicioPartido.cs.
+- Registrado y consultado por GestorPartidos.cs.
+- Almacenado en DatosSistema.cs.
+- Referenciado por LocalidadPorPartido.cs.
+- Referenciado por Venta.cs.
+- Validado por ServicioVenta.cs.
+
+### Localidad.cs
+- Usado por FrmLocalidades.cs.
+- Usado por FrmConsultarLocalidades.cs.
+- Creado y validado por ServicioLocalidad.cs.
+- Registrado y consultado por GestorLocalidades.cs.
+- Almacenado en DatosSistema.cs.
+- Referenciado por LocalidadPorPartido.cs.
+- Referenciado por Venta.cs.
+- Validado por ServicioVenta.cs.
+
+### LocalidadPorPartido.cs
+- Usado por FrmLocalidadPorPartido.cs.
+- Usado por FrmConsultarLocalidadPorPartido.cs.
+- Creado y validado por ServicioLocalidadPorPartido.cs.
+- Registrado y consultado por GestorLocalidadesPorPartido.cs.
+- Almacenado en DatosSistema.cs.
+- Referenciado por Venta.cs.
+- Consultado y actualizado por ServicioVenta.cs para validar disponibilidad.
+
+### Venta.cs
+- Usado por FrmVentaDeEntradas.cs.
+- Usado por FrmConsultarVentas.cs.
+- Creado por ServicioVenta.cs.
+- Validado por ServicioVenta.cs.
+- Registrado y consultado por GestorVentas.cs.
+- Almacenado en DatosSistema.cs.
+- Contiene referencias a Cliente.cs, Vendedor.cs, Partido.cs, Localidad.cs y LocalidadPorPartido.cs.
 
 ## Flujo General de Navegación
 
