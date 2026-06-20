@@ -378,21 +378,17 @@ Relaciones principales:
 
 ### ServicioVenta.cs
 
-Responsable de administrar el proceso de venta de entradas.
+Responsable de crear y validar ventas.
 
-Relaciones principales:
-
+Relaciones:
+- Usa Cliente.cs.
+- Usa Vendedor.cs.
+- Usa Partido.cs.
+- Usa Localidad.cs.
+- Usa LocalidadPorPartido.cs.
+- Crea Venta.cs.
 - Usa GestorVentas.cs.
-- Usa GestorClientes.cs.
-- Usa GestorVendedores.cs.
-- Usa GestorPartidos.cs.
-- Usa GestorLocalidades.cs.
-- Usa GestorLocalidadesPorPartido.cs.
-- Crea objetos Venta.cs.
-- Valida disponibilidad en LocalidadPorPartido.cs.
-- Calcula el total utilizando el precio de Localidad.cs.
-- Registra la venta en GestorVentas.cs.
-- Actualiza la disponibilidad de boletos.
+- Usa GestorLocalidadesPorPartido.cs para actualizar disponibilidad.
 
 ---
 
@@ -543,136 +539,80 @@ La capa de entidades contiene las clases que representan el dominio del sistema.
 
 ## Entidades del Sistema
 
+La capa Entidades contiene las clases de dominio principales. Cada entidad debe representarse como una clase separada dentro del diagrama.
+
 ### Persona.cs
 
-Clase base para entidades que representan personas.
-
-Propiedades principales:
-
-- Id
-- Identificacion
-- Nombre
-- Apellido
-- FechaNacimiento
+Clase base para personas del sistema.
 
 Relaciones:
-
 - Cliente.cs hereda de Persona.cs.
 - Vendedor.cs hereda de Persona.cs.
 
 ### Cliente.cs
 
-Representa al comprador de entradas.
-
-Hereda de:
-
-- Persona.cs
-
-Propiedades adicionales:
-
-- FechaRegistro
-- Activo
+Entidad que representa al comprador de entradas.
 
 Relaciones:
-
-- Se utiliza en Venta.cs.
-- Se administra mediante ServicioCliente.cs y GestorClientes.cs.
+- Hereda de Persona.cs.
+- Es referenciada por Venta.cs.
+- Es creada y consultada mediante ServicioCliente.cs.
+- Es almacenada por GestorClientes.cs.
 
 ### Vendedor.cs
 
-Representa al usuario o empleado que registra ventas.
-
-Hereda de:
-
-- Persona.cs
-
-Propiedades adicionales:
-
-- FechaIngreso
+Entidad que representa al vendedor que registra la venta.
 
 Relaciones:
-
-- Se utiliza en Venta.cs.
-- Se administra mediante ServicioVendedor.cs y GestorVendedores.cs.
+- Hereda de Persona.cs.
+- Es referenciada por Venta.cs.
+- Es creada y consultada mediante ServicioVendedor.cs.
+- Es almacenada por GestorVendedores.cs.
 
 ### Partido.cs
 
-Representa un evento deportivo.
-
-Propiedades principales:
-
-- IdPartido
-- Rival
-- Fecha
-- Hora
-- Activo
+Entidad que representa un partido deportivo.
 
 Relaciones:
-
-- Se utiliza en LocalidadPorPartido.cs.
-- Se utiliza en Venta.cs.
-- Se administra mediante ServicioPartido.cs y GestorPartidos.cs.
+- Es referenciada por LocalidadPorPartido.cs.
+- Es referenciada por Venta.cs.
+- Es creada y consultada mediante ServicioPartido.cs.
+- Es almacenada por GestorPartidos.cs.
 
 ### Localidad.cs
 
-Representa una zona o localidad del estadio.
-
-Propiedades principales:
-
-- IdLocalidad
-- NombreLocalidad
-- Precio
+Entidad que representa una zona del estadio.
 
 Relaciones:
-
-- Se utiliza en LocalidadPorPartido.cs.
-- Se utiliza en Venta.cs.
-- Se administra mediante ServicioLocalidad.cs y GestorLocalidades.cs.
+- Es referenciada por LocalidadPorPartido.cs.
+- Es referenciada por Venta.cs.
+- Es creada y consultada mediante ServicioLocalidad.cs.
+- Es almacenada por GestorLocalidades.cs.
 
 ### LocalidadPorPartido.cs
 
-Representa la disponibilidad de una localidad para un partido específico.
-
-Propiedades principales:
-
-- Partido
-- Localidad
-- CantidadDisponible
+Entidad de relación entre Partido.cs y Localidad.cs.
 
 Relaciones:
-
-- Relaciona Partido.cs con Localidad.cs.
-- Se utiliza para validar disponibilidad en ServicioVenta.cs.
-- Se administra mediante ServicioLocalidadPorPartido.cs y GestorLocalidadesPorPartido.cs.
-- Se referencia desde Venta.cs.
+- Contiene una referencia a Partido.cs.
+- Contiene una referencia a Localidad.cs.
+- Es utilizada por ServicioLocalidadPorPartido.cs.
+- Es utilizada por ServicioVenta.cs para validar disponibilidad.
+- Es almacenada por GestorLocalidadesPorPartido.cs.
+- Es referenciada por Venta.cs.
 
 ### Venta.cs
 
-Representa una venta de entradas.
-
-Propiedades principales:
-
-- IdVenta
-- Cliente
-- Vendedor
-- Partido
-- Localidad
-- LocalidadPorPartido
-- Cantidad
-- FechaVenta
-- Total
+Entidad que representa la transacción final.
 
 Relaciones:
-
-- Referencia Cliente.cs.
-- Referencia Vendedor.cs.
-- Referencia Partido.cs.
-- Referencia Localidad.cs.
-- Referencia LocalidadPorPartido.cs.
-- Es creada y validada por ServicioVenta.cs.
+- Contiene una referencia a Cliente.cs.
+- Contiene una referencia a Vendedor.cs.
+- Contiene una referencia a Partido.cs.
+- Contiene una referencia a Localidad.cs.
+- Contiene una referencia a LocalidadPorPartido.cs.
+- Es creada por ServicioVenta.cs.
 - Es almacenada por GestorVentas.cs.
-
----
 
 ## Flujo General de Navegación
 
